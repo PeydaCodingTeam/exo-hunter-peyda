@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Exoplanet Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        
+        :root {
+            --dark-bg: #111115;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-color: #f0f0f5;
+            --purple-primary: #8e44ad; 
+            --purple-secondary: #9b59b6;
+            --purple-light: #ab6cc9;
+            --glow-color: #8e44ad;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            display: flex;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1400px;
+            max-height: 900px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+
+
+
+       
+
+       
+        ::-webkit-scrollbar {
+            width: 8px; 
+            height: 8px; 
+        }
+
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color); 
+        }
+
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--purple-primary);
+            border-radius: 10px;
+            border: 2px solid var(--dark-bg); 
+        }
+
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--purple-light);
+        }
+
+        
+        ::-webkit-scrollbar-corner {
+            background: var(--dark-bg);
+        }
+
+
+        
+        .reset-btn-style {
+            background-color: #c0392b;
+            border: 1px solid #a5281b; 
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-left: 10px; 
+            font-weight: bold; 
+        }
+
+        .reset-btn-style:hover {
+            background-color: #e74c3c; 
+            transform: scale(1.05);
+        }
+
+        
+        .model-description-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem; 
+            padding-top: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            line-height: 1.6; 
+        }
+
+        
+        .model-description-content p {
+            margin-bottom: 1.25rem;
+        }
+
+        
+        .model-description-content ul {
+            list-style-type: none;
+            padding-left: 0; 
+            margin-bottom: 1.25rem;
+        }
+
+        .model-description-content li {
+            margin-bottom: 0.5rem; 
+        }
+
+        
+        .model-description-content h4 {
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        
+        .model-description-content h3 {
+        color: var(--purple-light);
+        
+        
+        font-size: 1.6rem; 
+        font-weight: 600;
+
+       
+        margin-top: 0; 
+        margin-bottom: 1.5rem; 
+        
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+        
+        .model-description-content p:first-of-type {
+            margin-top: 0;
+        }
+
+        .model-description-content h4 {
+            color: var(--text-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .model-description-content ul {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .disposition-list li::before {
+            content: "•";
+            color: var(--purple-primary);
+            font-weight: bold;
+            display: inline-block; 
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .accuracy-box {
+            margin-top: 2rem;
+            padding: 1rem;
+            border: 2px solid var(--purple-primary);
+            border-radius: 8px;
+            display: inline-block;
+            background: rgba(142, 68, 173, 0.2); 
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .accuracy-value {
+            color: #2ecc71; 
+            margin-left: 0.5rem;
+        }
+
+        
+        .model-tabs .tab {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-weight: bold; 
+        }
+
+        
+        .model-tabs .tab:hover {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+
+       
+        .model-tabs .tab.active {
+            background-color: var(--border-color);
+            transform: none; 
+        }
+
+        
+        
+
+        .view-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .view-btn:hover {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+
+       
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding-top: 60px;
+        }
+
+
+        
+        .shap-explain-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        
+        .shap-explain-btn:hover {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+
+
+        
+        .model-actions {
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border-color); 
+            padding-top: 1.5rem;
+        }
+
+        
+        #single-predict-btn {
+            margin-top: 0; 
+            margin-right: auto; 
+        }
+
+        .bulk-btn, .sample-btn {
+            padding: 0.75rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap; 
+        }
+
+        .bulk-btn {
+            background-color: var(--purple-secondary); 
+            color: white;
+            border: none;
+        }
+
+        .bulk-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
+        }
+
+        .sample-btn {
+            background-color: #34495e; 
+            color: white;
+            border: none;
+        }
+
+        .sample-btn:hover {
+            transform: scale(1.05);
+            background-color: #2c3e50;
+        }
+        .modal-content {
+            background-color: var(--dark-bg);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            width: 80%;
+            max-width: 600px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-filter {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-right: 0.5rem; 
+        }
+
+        .history-filter:hover {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+
+        .history-filter.active {
+            background-color: var(--purple-main);
+            color: var(--dark-bg);
+            border-color: var(--purple-main);
+        }
+
+    
+        #shap-modal .modal-content {
+           
+            color: var(--text-color);
+            padding: 30px; 
+        }
+
+        #shap-modal h2 {
+            color: var(--purple-primary);
+            border-bottom: 2px solid var(--purple-primary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        
+        #shap-features-list {
+            list-style: none;
+            
+            padding: 0 15px 0 0; 
+            max-height: 350px; 
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        #shap-features-list li {
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0; 
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+        }
+
+
+
+        #shap-features-list li:last-child {
+            border-bottom: none; 
+        }
+
+       
+        .feature-name {
+            font-weight: 500;
+            color: var(--text-color);
+            padding-right: 15px; 
+        }
+
+        
+        .feature-importance {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--purple-light);
+            
+            min-width: 80px; 
+            text-align: right;
+        }
+
+
+        .history-action-header {
+            text-align: center;
+        }
+
+
+
+
+
+        
+        #errorModal .modal-content, #confirmExportModal .modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem; 
+        }
+
+       
+        #error-message, #confirm-message {
+            padding: 0 1rem;
+        }
+
+        
+        #error-okay-btn:hover {
+            transform: none;
+        }
+
+
+
+        
+        .shap-close-btn {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;    
+            font-weight: bold;
+            cursor: pointer;    
+            line-height: 20px;   
+            padding: 5px 10px;   
+            transition: color 0.3s; 
+        }
+
+        .shap-close-btn:hover,
+        .shap-close-btn:focus {
+            color: var(--purple-light); 
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--purple-light);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #modal-content-pre {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 1rem;
+        }
+       
+        .sidebar {
+            width: 250px;
+            min-width: 200px;
+            padding: 2rem 1rem;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: width 0.3s ease;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--purple-primary), var(--purple-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        
+        .export-btn-style {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-left: 10px; 
+        }
+
+       
+        .export-btn-style:hover:not(.disabled) {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+
+       
+        .export-btn-style.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none; 
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+        }
+        .menu-list li {
+            margin-bottom: 0.5rem;
+        }
+        .menu-list a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .modal-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .modal-btn:hover {
+            background-color: var(--border-color);
+            transform: scale(1.05);
+        }
+        .menu-list a:hover {
+            background-color: var(--card-bg);
+            transform: scale(1.02);
+        }
+        .menu-list a.active {
+            background: linear-gradient(90deg, var(--purple-primary), var(--purple-secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+        }
+        .menu-list i {
+            font-size: 1.25rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            gap: 2rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .search-bar {
+            position: relative;
+        }
+        .search-bar input {
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-bar input:focus {
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.3);
+        }
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .card-header i {
+            font-size: 1.5rem;
+            color: var(--purple-light);
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .card p {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.4;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: none;
+            color: #aaa;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .tab-button.active {
+            color: var(--purple-light);
+            border-bottom: 2px solid var(--purple-primary);
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .input-group input {
+            padding: 0.75rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+        }
+        .predict-button {
+            padding: 1rem 2rem;
+            margin-top: 2rem;
+            background: linear-gradient(90deg, var(--purple-primary), var(--purple-secondary));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .predict-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+        #result-display {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--purple-light);
+        }
+        .history-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .history-table th, .history-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .history-table th {
+            color: var(--purple-light);
+            font-weight: 600;
+        }
+        .history-table tr:hover {
+            background-color: var(--card-bg);
+        }
+        .loader {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--purple-primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 900px) {
+            .app-container { width: 98vw; height: 98vh; }
+            .sidebar { width: 70px; min-width: 50px; padding: 1rem 0.5rem; }
+            .sidebar .logo { font-size: 1rem; margin-bottom: 0.5rem; }
+            .sidebar .logo span { display: none; }
+            .menu-list a span { display: none; }
+            .menu-list a { justify-content: center; gap: 0; }
+            .main-content { padding: 1.5rem 1rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%238e44ad%22/></svg>">
+</head>
+<body>
+    <input type="file" id="bulkFileInput" accept=".csv" style="display: none;">
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+            
+                <span>Exoplanet Detector</span>
+            </div>
+            <nav>
+                <ul class="menu-list">
+                    <li>
+                        <a href="#" class="active" data-page="predict">
+                            <i class="fas fa-microscope"></i>
+                            <span>Predict</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="history">
+                            <i class="fas fa-history"></i>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="variables">
+                            <i class="fas fa-book"></i>
+                            <span>Variables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="models">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Model Info</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1 id="page-title">Predict</h1>
+            </header>
+            
+            <div id="content-area">
+                </div>
+        </main>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Input Data Details</h3>
+            <pre id="modal-content-pre"></pre>
+        </div>
+    </div>
+
+
+    <div id="confirmExportModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirm-title">Confirm Deletation</h3>
+            <p id="confirm-message"></p>
+            <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 1.5rem;">
+                <button id="cancel-export-btn" class="modal-btn">Cancel</button>
+                <button id="confirm-export-btn" class="modal-btn" style="background-color: var(--purple-primary); border-color: var(--purple-primary); color: white;">Confirm Deletation</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <h3>Export Error</h3>
+            <p id="error-message"></p>
+            <button id="error-okay-btn" class="modal-btn">Okay</button>
+        </div>
+    </div>
+
+    <div id="shap-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn shap-close-btn">&times;</span>
+            <h2>Prediction Explanation (SHAP)</h2>
+            <p>Top features influencing this prediction:</p>
+            <div id="shap-results-container">
+                <ul id="shap-features-list">
+                    </ul>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.8em; color: var(--text-color);">
+                Importance value is the feature's contribution (absolute SHAP value) to the final prediction.
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        
+        const keplerFeatureNames = ['kepid', 'koi_score', 'koi_fpflag_nt', 'koi_fpflag_ss', 'koi_fpflag_co', 'koi_fpflag_ec', 'koi_period', 'koi_period_err1', 'koi_period_err2', 'koi_time0bk', 'koi_time0bk_err1', 'koi_time0bk_err2', 'koi_impact', 'koi_impact_err1', 'koi_impact_err2', 'koi_duration', 'koi_duration_err1', 'koi_duration_err2', 'koi_depth', 'koi_depth_err1', 'koi_depth_err2', 'koi_prad', 'koi_prad_err1', 'koi_prad_err2', 'koi_teq', 'koi_insol', 'koi_insol_err1', 'koi_insol_err2', 'koi_model_snr', 'koi_tce_plnt_num', 'koi_steff', 'koi_steff_err1', 'koi_steff_err2', 'koi_slogg', 'koi_slogg_err1', 'koi_slogg_err2', 'koi_srad', 'koi_srad_err1', 'koi_srad_err2', 'ra', 'dec', 'koi_kepmag'];
+
+        const tessFeatureNames = ['toi', 'tid', 'ra', 'dec', 'st_pmra', 'st_pmraerr1', 'st_pmraerr2', 'st_pmralim', 'st_pmdec', 'st_pmdecerr1', 'st_pmdecerr2', 'st_pmdeclim', 'pl_tranmid', 'pl_tranmiderr1', 'pl_tranmiderr2', 'pl_tranmidlim', 'pl_orbper', 'pl_orbpererr1', 'pl_orbpererr2', 'pl_orbperlim', 'pl_trandurh', 'pl_trandurherr1', 'pl_trandurherr2', 'pl_trandurhlim', 'pl_trandep', 'pl_trandeperr1', 'pl_trandeperr2', 'pl_trandeplim', 'pl_rade', 'pl_radeerr1', 'pl_radeerr2', 'pl_radelim', 'pl_insol', 'pl_eqt', 'st_tmag', 'st_tmagerr1', 'st_tmagerr2', 'st_tmaglim', 'st_dist', 'st_disterr1', 'st_disterr2', 'st_distlim', 'st_teff', 'st_tefferr1', 'st_tefferr2', 'st_tefflim', 'st_logg', 'st_loggerr1', 'st_loggerr2', 'st_logglim', 'st_rad', 'st_raderr1', 'st_raderr2', 'st_radlim'];
+
+      
+        const sampleTessData = {
+            'toi': 0.28312, 'tid': 0.00001, 'ra': 338.40698, 'dec': -1.51709, 'st_pmra': 2.831, 'st_pmraerr1': 0.001, 'st_pmraerr2': -0.001, 'st_pmralim': 0, 'st_pmdec': 1.127, 'st_pmdecerr1': 0.007, 'st_pmdecerr2': -0.007, 'st_pmdeclim': 0, 'pl_tranmid': 2458467.4, 'pl_tranmiderr1': 0.00001, 'pl_tranmiderr2': -0.00001, 'pl_tranmidlim': 0, 'pl_orbper': 5.124976, 'pl_orbpererr1': 0.000001, 'pl_orbpererr2': -0.000001, 'pl_orbperlim': 0, 'pl_trandurh': 0.771, 'pl_trandurherr1': 0.0005, 'pl_trandurherr2': -0.0005, 'pl_trandurhlim': 0, 'pl_trandep': 2465.1, 'pl_trandeperr1': 12.3, 'pl_trandeperr2': -12.3, 'pl_trandeplim': 0, 'pl_rade': 14.77, 'pl_radeerr1': 0.65, 'pl_radeerr2': -0.65, 'pl_radelim': 0, 'pl_insol': 0.86, 'pl_eqt': 0.09, 'st_tmag': -0.09, 'st_tmagerr1': 0, 'st_tmagerr2': 6088.0, 'st_tmaglim': 150.0, 'st_dist': -150.0, 'st_disterr1': 0, 'st_disterr2': 4.417, 'st_distlim': 0.063, 'st_teff': -0.063, 'st_tefferr1': 0, 'st_tefferr2': 0.88, 'st_tefflim': 0.03, 'st_logg': -0.03, 'st_loggerr1': 0, 'st_loggerr2': 11.23, 'st_logglim': 0.02, 'st_rad': -0.02, 'st_raderr1': 0, 'st_raderr2': 10.155, 'st_radlim': 0.016
+        };
+
+        
+        const sampleKeplerData = {
+            'kepid': 11513441, 'koi_score': 0.99, 'koi_fpflag_nt': 0, 'koi_fpflag_ss': 0, 'koi_fpflag_co': 0, 'koi_fpflag_ec': 0, 'koi_period': 245.549, 'koi_period_err1': 0.0003, 'koi_period_err2': -0.0003, 'koi_time0bk': 15.2, 'koi_time0bk_err1': 0.006, 'koi_time0bk_err2': -0.006, 'koi_impact': 0.05, 'koi_impact_err1': 0.007, 'koi_impact_err2': -0.007, 'koi_duration': 3.5, 'koi_duration_err1': 0.1, 'koi_duration_err2': -0.1, 'koi_depth': 1500.0, 'koi_depth_err1': 50.0, 'koi_depth_err2': -50.0, 'koi_prad': 1.5, 'koi_prad_err1': 0.1, 'koi_prad_err2': -0.1, 'koi_teq': 350.0, 'koi_insol': 20.5, 'koi_insol_err1': 3.0, 'koi_insol_err2': -3.0, 'koi_model_snr': 50.0, 'koi_tce_plnt_num': 1, 'koi_steff': 5800.0, 'koi_steff_err1': 100.0, 'koi_steff_err2': -100.0, 'koi_slogg': 4.5, 'koi_slogg_err1': 0.1, 'koi_slogg_err2': -0.1, 'koi_srad': 0.9, 'koi_srad_err1': 0.05, 'koi_srad_err2': -0.05, 'ra': 290.0, 'dec': 45.0, 'koi_kepmag': 14.0
+        };
+
+
+
+       
+        async function setupModelInfoPage() {
+                const modelDetailsDisplay = document.getElementById('model-details-display');
+                const modelTabs = document.querySelectorAll('.tab-container .tab-button');
+                
+                
+                let accuracyData = { 
+                    kepler_accuracy: '92.5', 
+                    tess_accuracy: '72'    
+                };
+
+                
+                try {
+                    const response = await fetch('/model_info');
+                    if (response.ok) {
+                        const fetchedData = await response.json();
+                        accuracyData = fetchedData;
+                    }
+                } catch (error) {
+                    console.error('Failed to load model info from server. Using placeholder values.', error);
+                }
+
+                
+                const modelTemplates = {
+                    kepler: `
+                        <div class="model-description-content">
+                            <h3>Kepler Model: Random Forest Classification</h3>
+                            <p>This model was trained exclusively on data from the Kepler Objects of Interest (KOI) catalog, focusing on robust classification of light curve anomalies detected by the Kepler mission. Its objective is to distinguish confirmed exoplanets from false alarms based on stellar and orbital properties.</p>
+                            
+                            <h4>Training & Feature Engineering</h4>
+                            <p>The dataset used for training this model is the NASA Exoplanet Archive's cumulative list: 
+                                <a href="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative" target="_blank">[Cumulative KOI Dataset Link]</a>
+                            </p>
+                            <ul>
+                                <li><strong>Algorithm:</strong> Random Forest Classifier (chosen for its high predictive power and built-in handling of non-linear features).</li>
+                                <li><strong>Core Features:</strong> Uses a stable set of 40+ features including orbital period (pl\_orbper), transit depth (pl\_trandep), stellar effective temperature (st\_teff), and surface gravity (st\_logg).</li>
+                            </ul>
+                            
+                            <h4>Classification Results</h4>
+                            <p>The model categorizes potential exoplanets into one of three primary dispositions:</p>
+                            <ul class="disposition-list">
+                                <li>CONFIRMED (C): High certainty of being a true exoplanet.</li>
+                                <li>CANDIDATE (CP): Considered a viable planet candidate; requires further observation for confirmation.</li>
+                                <li>FALSE POSITIVE (FP): The detected signal is from a non-planetary source (e.g., stellar binary or instrument artifact).</li>
+                            </ul>
+                            
+                            <div class="accuracy-box">
+                                <strong>Trained Accuracy:</strong> <span class="accuracy-value">${accuracyData.kepler_accuracy}%</span>
+                            </div>
+                        </div>
+                    `,
+                    tess: `
+                        <div class="model-description-content">
+                            <h3>TESS Model: XGBoost Multi-Class Classification</h3>
+                            <p>The TESS model leverages data from the Transiting Exoplanet Survey Satellite (TESS) mission. This model handles a more complex, multi-class classification task due to TESS's varied input data and mission scope (Sector observations, TOI designations).</p>
+                            
+                            <h4>Training & Feature Engineering</h4>
+                            <p>The dataset used for training this model is the NASA Exoplanet Archive's TESS Objects of Interest (TOI) list: 
+                                <a href="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=TOI" target="_blank">[TOI Dataset Link]</a>
+                            </p>
+                            <ul>
+                                <li><strong>Algorithm:</strong> XGBoost (Extreme Gradient Boosting), selected for its efficiency and superior performance on high-dimensional and occasionally sparse TESS observational data.</li>
+                                <li><strong>Core Features:</strong> Utilizes TESS-specific data points such as TOI/TID designation, and detailed planetary parameters (pl\_rade, pl\_insol), often tolerating missing values in certain fields.</li>
+                            </ul>
+                            
+                            <h4>Classification Results</h4>
+                            <p>This model performs a detailed, granular classification based on the observed TESS data:</p>
+                            <ul class="disposition-list">
+                                <li>PC (Planet Candidate): A high-likelihood signal showing a periodic transit.</li>
+                                <li>APC (Astrophysical Planet Candidate): A planet candidate with some astrophysical characteristics that require closer scrutiny.</li>
+                                <li>EB (Eclipsing Binary): The signal is caused by a stellar binary system.</li>
+                                <li>V (Variable): The target is a variable star, with brightness changes due to intrinsic stellar processes.</li>
+                                <li>FP (False Positive): General term for non-planetary events, including those not categorized above.</li>
+                            </ul>
+
+                            <div class="accuracy-box">
+                                <strong>Trained Accuracy:</strong> <span class="accuracy-value">${accuracyData.tess_accuracy}%</span>
+                            </div>
+                        </div>
+                    `
+                };
+
+                
+                function renderModelDetails(modelName) {
+                    modelDetailsDisplay.innerHTML = modelTemplates[modelName];
+                }
+
+                
+                modelTabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        modelTabs.forEach(t => t.classList.remove('active'));
+                        e.currentTarget.classList.add('active');
+                        
+                        const model = e.currentTarget.dataset.model;
+                        renderModelDetails(model);
+                    });
+                });
+
+              
+                renderModelDetails('kepler');
+            }
+
+        const pageContent = {
+            predict: `
+                <div class="tab-container">
+                    <button class="tab-button active" data-model="tess">TESS Model</button>
+                    <button class="tab-button" data-model="kepler">Kepler Model</button>
+                </div>
+                <div class="input-grid" id="input-fields"></div>
+                
+                <div class="model-actions">
+                    <button class="predict-button" id="single-predict-btn">See Results</button>
+                    <button id="bulk-input-btn" class="bulk-btn">Bulk Input</button>
+                    <button id="bulk-sample-btn" class="sample-btn">Bulk Input Sample</button>
+                </div>
+                
+                <div id="result-display"></div>
+            `,
+            history: `
+                <div class="history-controls">
+                    <div class="search-bar">
+                        <input type="text" id="history-search" placeholder="Search history...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="model-tabs">
+                    <button class="tab active" data-model="all">All Models</button>
+                    <button class="tab" data-model="Kepler">Kepler</button>
+                    <button class="tab" data-model="TESS">TESS</button>
+                </div>
+                    <button id="export-btn" class="export-btn-style disabled">Export to CSV</button>
+                    <button id="reset-btn" class="reset-btn-style"><i class="fas fa-trash-alt"></i> Reset History</button>
+                </div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Prediction</th>
+                            <th>Timestamp</th>
+                            <th>View Details</th> <th>Explanation</th> </tr>
+                    </thead>
+                    <tbody id="history-table-body"></tbody>
+                </table>
+            `,
+            models: `
+                <div class="tab-container">
+                    <button class="tab-button active" data-model="kepler">Kepler Model</button>
+                    <button class="tab-button" data-model="tess">TESS Model</button>
+                </div>
+                <div class="model-content" id="model-details-display">
+                    </div>
+            `,
+            variables: `
+                <div class="tab-container">
+                    <button class="tab-button active" data-model="tess">TESS Variables</button>
+                    <button class="tab-button" data-model="kepler">Kepler Variables</button>
+                </div>
+                <div class="variable-content" id="variable-display"></div>
+            `
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuLinks = document.querySelectorAll('.menu-list a');
+            const pageTitle = document.getElementById('page-title');
+            const contentArea = document.getElementById('content-area');
+
+            
+            updateContent('predict');
+
+       
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    menuLinks.forEach(item => item.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    const page = e.currentTarget.dataset.page;
+                    pageTitle.textContent = page.charAt(0).toUpperCase() + page.slice(1);
+                    updateContent(page);
+                });
+            });
+
+            function updateContent(page) {
+                contentArea.innerHTML = pageContent[page];
+                if (page === 'predict') {
+                    setupPredictPage();
+                } else if (page === 'history') {
+                    setupHistoryPage();
+                } else if (page === 'variables') {
+                    setupVariablesPage();
+                } else if (page === 'models') { 
+                    setupModelInfoPage();
+                }
+            }
+
+            
+            const detailsModal = document.getElementById('detailsModal');
+            const modalContent = document.getElementById('modal-content-pre');
+            const closeBtn = document.querySelector('#detailsModal .close-button');
+            const confirmExportModal = document.getElementById('confirmExportModal');
+            const confirmExportBtn = document.getElementById('confirm-export-btn');
+            const cancelExportBtn = document.getElementById('cancel-export-btn');
+            let resolveConfirmation; 
+            closeBtn.onclick = function() {
+                detailsModal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == detailsModal) {
+                    detailsModal.style.display = 'none';
+                }
+            }
+
+
+
+            
+            const errorModal = document.getElementById('errorModal');
+            const errorMessage = document.getElementById('error-message');
+            const errorOkayBtn = document.getElementById('error-okay-btn');
+
+            closeBtn.onclick = function() {
+                detailsModal.style.display = 'none';
+            }
+
+           
+            errorOkayBtn.onclick = function(event) {
+                
+                event.stopPropagation();
+                errorModal.style.display = 'none';
+            }
+
+           
+            window.onclick = function(event) {
+                if (event.target == detailsModal) {
+                    detailsModal.style.display = 'none';
+                }
+                if (event.target == errorModal) {
+                    errorModal.style.display = 'none';
+                }
+            }
+
+
+            
+            function showRawData(button) {
+                const inputData = button.getAttribute('data-input').replace(/&quot;/g, '"'); 
+                const parsedData = JSON.parse(inputData);
+                
+                const modalContentPre = document.getElementById('modal-content-pre');
+                const detailsModal = document.getElementById('detailsModal');
+                
+               
+                const formattedJsonString = JSON.stringify(parsedData, null, 2);
+                
+               
+                const htmlFormattedJson = formattedJsonString.replace(/\n/g, '<br>');
+
+                
+                modalContentPre.innerHTML = htmlFormattedJson;
+
+                detailsModal.style.display = 'block';
+            }
+
+           
+            async function showShapExplanation(button) {
+                const model = button.getAttribute('data-model'); 
+                const escapedInputDataJSON = button.getAttribute('data-input').replace(/&quot;/g, '"');
+                const inputData = JSON.parse(escapedInputDataJSON);
+
+                const shapModal = document.getElementById('shap-modal');
+                const shapFeaturesList = document.getElementById('shap-features-list');
+
+                shapFeaturesList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Calculating explanation...</li>';
+                shapModal.style.display = 'block';
+
+                try {
+                    const response = await fetch('/explain_prediction', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ model: model, input_data: inputData })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const explanation = data.explanation;
+                        shapFeaturesList.innerHTML = '';
+                        
+                        explanation.slice(0, 10).forEach(item => { 
+                            const li = document.createElement('li');
+                            li.innerHTML = `<span>${item.feature}</span><span class="shap-value">${item.importance.toFixed(5)}</span>`;
+                            shapFeaturesList.appendChild(li);
+                        });
+                    } else {
+                        const errorData = await response.json();
+                        shapFeaturesList.innerHTML = `<li style="color: red;">Error: ${errorData.error || 'Failed to calculate SHAP.'}</li>`;
+                    }
+                } catch (error) {
+                    console.error('SHAP Request Error:', error);
+                    shapFeaturesList.innerHTML = `<li style="color: red;">Connection error.</li>`;
+                }
+            }
+
+
+          
+
+          
+            document.addEventListener('click', (event) => {
+              
+                const rawDataButton = event.target.closest('.data-view-btn');
+                if (rawDataButton) { 
+                    showRawData(rawDataButton);
+                }
+                
+              
+                const explainButton = event.target.closest('.shap-explain-btn');
+                if (explainButton) { 
+                    showShapExplanation(explainButton); 
+                }
+            });
+
+          
+
+          
+            document.addEventListener('click', (event) => {
+
+                const explainButton = event.target.closest('.explain-btn');
+                if (explainButton) { 
+                    showShapExplanation(explainButton); 
+                }
+            });
+
+
+        
+            document.querySelector('.shap-close-btn').onclick = () => {
+                document.getElementById('shap-modal').style.display = 'none';
+            }
+
+
+
+
+            
+           
+            window.onclick = (event) => {
+             
+                const dataModal = document.getElementById('detailsModal'); 
+                const shapModal = document.getElementById('shap-modal');
+                
+                if (event.target == dataModal) {
+                    dataModal.style.display = 'none';
+                }
+                if (event.target == shapModal) {
+                    shapModal.style.display = 'none';
+                }
+            }
+
+          
+            function showSuccess(message) {
+                const modalTitle = document.querySelector('#errorModal h3');
+                modalTitle.textContent = 'Success';
+                document.getElementById('error-okay-btn').textContent = 'Close'; 
+                errorMessage.innerHTML = message;
+                errorModal.style.display = 'block';
+                
+              
+                const originalOnClick = errorOkayBtn.onclick;
+                errorOkayBtn.onclick = function(event) {
+                    event.stopPropagation();
+                    errorModal.style.display = 'none';
+                    modalTitle.textContent = 'Export Error'; 
+                    errorOkayBtn.textContent = 'Okay'; 
+                    errorOkayBtn.onclick = originalOnClick; 
+                }
+            }
+
+           
+            function showConfirmation(title, messageHtml) { 
+                document.getElementById('confirm-title').textContent = title;
+                document.getElementById('confirm-message').innerHTML = messageHtml; 
+                confirmExportModal.style.display = 'block';
+
+                return new Promise(resolve => {
+                    resolveConfirmation = resolve;
+                });
+            }
+
+            
+            confirmExportBtn.addEventListener('click', () => {
+                confirmExportModal.style.display = 'none';
+                if (resolveConfirmation) {
+                    resolveConfirmation(true); 
+                }
+            });
+
+            cancelExportBtn.addEventListener('click', () => {
+                confirmExportModal.style.display = 'none';
+                if (resolveConfirmation) {
+                    resolveConfirmation(false); 
+                }
+            });
+
+            
+            window.onclick = function(event) {
+                if (event.target == detailsModal) {
+                    detailsModal.style.display = 'none';
+                }
+                if (event.target == errorModal) {
+                    errorModal.style.display = 'none';
+                }
+                if (event.target == confirmExportModal) {
+                    confirmExportModal.style.display = 'none';
+                    
+                    if (resolveConfirmation) { 
+                        resolveConfirmation(false);
+                    }
+                }
+            }
+
+            const bulkFileInput = document.getElementById('bulkFileInput'); 
+        
+        
+        bulkFileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const model = bulkFileInput.getAttribute('data-model');
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('model', model);
+            
+            
+            bulkFileInput.value = ''; 
+
+            try {
+                const response = await fetch('/bulk_predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    updateContent('history'); 
+                    showSuccess(`Bulk prediction done for ${model.toUpperCase()}! The results have been saved to your history.`); 
+                    
+                    if (typeof fetchHistory === 'function') {
+                        
+                        fetchHistory('all', ''); 
+                    }
+
+                } else {
+                    showError(result.error || "An unknown error occurred during bulk prediction. Check the server console.");
+                }
+
+            } catch (error) {
+                showError("Failed to connect to the server for bulk prediction.");
+                console.error('Bulk Prediction Error:', error);
+            } 
+        });
+
+            function setupVariablesPage() {
+                const tabContainer = document.querySelector('#content-area .tab-container');
+                const variableDisplay = document.getElementById('variable-display');
+                
+               
+                const predictionsButton = document.createElement('button');
+                predictionsButton.className = 'tab-button';
+                predictionsButton.dataset.model = 'predictions';
+                predictionsButton.textContent = 'Predictions';
+                tabContainer.appendChild(predictionsButton);
+                
+                let currentModel = 'tess';
+
+                const tessVariables = {
+                    'toi': 'TESS Object of Interest number',
+                    'tid': 'TESS Input Catalog ID',
+                    'ra': 'Right Ascension (J2000)',
+                    'dec': 'Declination (J2000)',
+                    'st_pmra': 'Stellar Proper Motion in Right Ascension',
+                    'st_pmraerr1': 'Positive error on Proper Motion in RA',
+                    'st_pmraerr2': 'Negative error on Proper Motion in RA',
+                    'st_pmralim': 'Limit flag for Proper Motion in RA',
+                    'st_pmdec': 'Stellar Proper Motion in Declination',
+                    'st_pmdecerr1': 'Positive error on Proper Motion in Dec',
+                    'st_pmdecerr2': 'Negative error on Proper Motion in Dec',
+                    'st_pmdeclim': 'Limit flag for Proper Motion in Dec',
+                    'pl_tranmid': 'Transit Midpoint Time',
+                    'pl_tranmiderr1': 'Positive error on Transit Midpoint Time',
+                    'pl_tranmiderr2': 'Negative error on Transit Midpoint Time',
+                    'pl_tranmidlim': 'Limit flag for Transit Midpoint Time',
+                    'pl_orbper': 'Orbital Period (days)',
+                    'pl_orbpererr1': 'Positive error on Orbital Period',
+                    'pl_orbpererr2': 'Negative error on Orbital Period',
+                    'pl_orbperlim': 'Limit flag for Orbital Period',
+                    'pl_trandurh': 'Transit Duration (hours)',
+                    'pl_trandurherr1': 'Positive error on Transit Duration',
+                    'pl_trandurherr2': 'Negative error on Transit Duration',
+                    'pl_trandurhlim': 'Limit flag for Transit Duration',
+                    'pl_trandep': 'Transit Depth (ppm)',
+                    'pl_trandeperr1': 'Positive error on Transit Depth',
+                    'pl_trandeperr2': 'Negative error on Transit Depth',
+                    'pl_trandeplim': 'Limit flag for Transit Depth',
+                    'pl_rade': 'Planet Radius (Earth radii)',
+                    'pl_radeerr1': 'Positive error on Planet Radius',
+                    'pl_radeerr2': 'Negative error on Planet Radius',
+                    'pl_radelim': 'Limit flag for Planet Radius',
+                    'pl_insol': 'Insolation Flux (Earth fluxes)',
+                    'pl_eqt': 'Equilibrium Temperature (K)',
+                    'st_tmag': 'TESS Magnitude',
+                    'st_tmagerr1': 'Positive error on TESS Magnitude',
+                    'st_tmagerr2': 'Negative error on TESS Magnitude',
+                    'st_tmaglim': 'Limit flag for TESS Magnitude',
+                    'st_dist': 'Distance to star (parsec)',
+                    'st_disterr1': 'Positive error on Stellar Distance',
+                    'st_disterr2': 'Negative error on Stellar Distance',
+                    'st_distlim': 'Limit flag for Stellar Distance',
+                    'st_teff': 'Stellar Effective Temperature (K)',
+                    'st_tefferr1': 'Positive error on Stellar Effective Temperature',
+                    'st_tefferr2': 'Negative error on Stellar Effective Temperature',
+                    'st_tefflim': 'Limit flag for Stellar Effective Temperature',
+                    'st_logg': 'Stellar Surface Gravity',
+                    'st_loggerr1': 'Positive error on Stellar Surface Gravity',
+                    'st_loggerr2': 'Negative error on Stellar Surface Gravity',
+                    'st_logglim': 'Limit flag for Stellar Surface Gravity',
+                    'st_rad': 'Stellar Radius (Solar radii)',
+                    'st_raderr1': 'Positive error on Stellar Radius',
+                    'st_raderr2': 'Negative error on Stellar Radius',
+                    'st_radlim': 'Limit flag for Stellar Radius'
+                };
+
+                
+                const keplerVariables = {
+                    'kepid': 'Kepler ID',
+                    'koi_score': 'Kepler Object of Interest Score',
+                    'koi_fpflag_nt': 'Flag: Not Transiting false positive',
+                    'koi_fpflag_ss': 'Flag: Stellar false positive',
+                    'koi_fpflag_co': 'Flag: Cotransiting false positive',
+                    'koi_fpflag_ec': 'Flag: Eclipsing Binary false positive',
+                    'koi_period': 'Orbital Period (days)',
+                    'koi_period_err1': 'Positive error on Period',
+                    'koi_period_err2': 'Negative error on Period',
+                    'koi_time0bk': 'Transit Midpoint Time (BKJD)',
+                    'koi_time0bk_err1': 'Positive error on Transit Midpoint',
+                    'koi_time0bk_err2': 'Negative error on Transit Midpoint',
+                    'koi_impact': 'Impact Parameter',
+                    'koi_impact_err1': 'Positive error on Impact Parameter',
+                    'koi_impact_err2': 'Negative error on Impact Parameter',
+                    'koi_duration': 'Transit Duration (hours)',
+                    'koi_duration_err1': 'Positive error on Duration',
+                    'koi_duration_err2': 'Negative error on Duration',
+                    'koi_depth': 'Transit Depth (ppm)',
+                    'koi_depth_err1': 'Positive error on Depth',
+                    'koi_depth_err2': 'Negative error on Depth',
+                    'koi_prad': 'Planet Radius (Earth radii)',
+                    'koi_prad_err1': 'Positive error on Planet Radius',
+                    'koi_prad_err2': 'Negative error on Planet Radius',
+                    'koi_teq': 'Equilibrium Temperature (K)',
+                    'koi_insol': 'Insolation Flux (Earth fluxes)',
+                    'koi_insol_err1': 'Positive error on Insolation',
+                    'koi_insol_err2': 'Negative error on Insolation',
+                    'koi_model_snr': 'Model Signal to Noise Ratio',
+                    'koi_tce_plnt_num': 'Planet number in TCE',
+                    'koi_steff': 'Stellar Effective Temperature (K)',
+                    'koi_steff_err1': 'Positive error on Stellar Effective Temp',
+                    'koi_steff_err2': 'Negative error on Stellar Effective Temp',
+                    'koi_slogg': 'Stellar Surface Gravity',
+                    'koi_slogg_err1': 'Positive error on Stellar Surface Gravity',
+                    'koi_slogg_err2': 'Negative error on Stellar Surface Gravity',
+                    'koi_srad': 'Stellar Radius (Solar radii)',
+                    'koi_srad_err1': 'Positive error on Stellar Radius',
+                    'koi_srad_err2': 'Negative error on Stellar Radius',
+                    'ra': 'Right Ascension (degrees)',
+                    'dec': 'Declination (degrees)',
+                    'koi_kepmag': 'Kepler Magnitude'
+                };
+
+
+                const predictionLabels = {
+                    'CONFIRMED (Kepler Model)': 'The object has been confirmed as a planet.',
+                    'CANDIDATE (Kepler Model)': 'The object is considered a viable planet candidate. Further observation is needed to confirm.',
+                    'FALSE POSITIVE (Kepler Model)': 'The object is not a planet; the signal is from a non-planetary source.',
+                    'PC (Planet Candidate) (TESS Model)': 'A signal that shows a periodic transit-like event with a high likelihood of being a planet.',
+                    'APC (Astrophysical Planet Candidate) (TESS Model)': 'A signal likely to be a planet candidate but has some characteristics that could be astrophysical in nature.',
+                    'EB (Eclipsing Binary) (TESS Model)': 'A stellar binary system in which the orbital plane of its two stars lies so close to the line of sight of the observer that they periodically eclipse each other, causing a change in brightness.',
+                    'FP (False Positive) (TESS Model)': 'The detected signal is not from a planet. This is a general term for all non-planetary transit events.',
+                    'V (Variable) (TESS Model)': 'The target is a variable star, meaning its brightness changes over time due to an intrinsic stellar process, not a transiting planet.'
+                };
+
+                function renderVariables(modelName) {
+                    let variables;
+                    if (modelName === 'tess') {
+                        variables = tessVariables;
+                    } else if (modelName === 'kepler') {
+                        variables = keplerVariables;
+                    } else if (modelName === 'predictions') {
+                        variables = predictionLabels;
+                    }
+                    
+                    variableDisplay.innerHTML = '';
+                    const table = document.createElement('table');
+                    table.className = 'history-table';
+                    const header = `<thead><tr><th>Result</th><th>Meaning</th></tr></thead>`;
+                    let body = '<tbody>';
+                    for (const [key, value] of Object.entries(variables)) {
+                        body += `<tr><td><span class="variable-key">${key}</span></td><td>${value}</td></tr>`;
+                    }
+                    body += '</tbody>';
+                    table.innerHTML = header + body;
+                    variableDisplay.appendChild(table);
+                }
+
+                
+                renderVariables(currentModel);
+
+               
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        currentModel = button.dataset.model;
+                        renderVariables(currentModel);
+                    });
+                });
+            }
+
+
+           
+            function exportToCsv(data) {
+                if (!data || data.length === 0) {
+                    alert("No history to export.");
+                    return;
+                }
+
+                
+                let inputHeaders = new Set();
+                data.forEach(entry => {
+                    if (entry.input_data) {
+                        Object.keys(entry.input_data).forEach(key => inputHeaders.add(key));
+                    }
+                });
+
+                const staticHeaders = ['Model', 'Prediction', 'Timestamp'];
+                const allHeaders = [...staticHeaders, ...Array.from(inputHeaders)];
+
+              
+                let csvContent = allHeaders.map(header => `"${header}"`).join(',') + '\n';
+
+                data.forEach(row => {
+                    let rowData = [
+                        `"${row.model_name}"`,
+                        `"${row.prediction}"`,
+                        `"${row.timestamp}"`
+                    ];
+
+                  
+                    allHeaders.slice(staticHeaders.length).forEach(header => {
+                        const value = row.input_data && row.input_data[header] !== undefined ? row.input_data[header] : '';
+                        rowData.push(`"${value}"`);
+                    });
+
+                    csvContent += rowData.join(',') + '\n';
+                });
+
+              
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "prediction_history.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+
+            function setupPredictPage() {
+                const inputFieldsDiv = document.getElementById('input-fields');
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const predictButton = document.getElementById('single-predict-btn');
+                const bulkFileInput = document.getElementById('bulkFileInput');
+                const resultDisplay = document.getElementById('result-display');
+                let currentModel = 'tess';
+
+
+                const bulkInputBtn = document.getElementById('bulk-input-btn');
+                const bulkSampleBtn = document.getElementById('bulk-sample-btn');
+
+                function renderInputs(modelName) {
+                    const featureNames = modelName === 'tess' ? tessFeatureNames : keplerFeatureNames;
+                    const sampleData = modelName === 'tess' ? sampleTessData : sampleKeplerData;
+                    inputFieldsDiv.innerHTML = '';
+                    featureNames.forEach(name => {
+                        const group = document.createElement('div');
+                        group.className = 'input-group';
+                        const label = document.createElement('label');
+                        label.textContent = name.replace(/_/g, ' ').toUpperCase(); 
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.id = name;
+                        input.name = name;
+                        input.value = sampleData[name] || ''; 
+                        input.step = 'any';
+                        group.appendChild(label);
+                        group.appendChild(input);
+                        inputFieldsDiv.appendChild(group);
+                    });
+                }
+
+
+                
+
+                async function showShapExplanation(button) {
+                    const model = button.getAttribute('data-model'); 
+                    const escapedInputDataJSON = button.getAttribute('data-input').replace(/&quot;/g, '"');
+                    const inputData = JSON.parse(escapedInputDataJSON);
+
+                    const shapModal = document.getElementById('shap-modal');
+                    const shapFeaturesList = document.getElementById('shap-features-list');
+
+                  
+                    shapFeaturesList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> Calculating explanation...</li>';
+                    shapModal.style.display = 'block';
+
+                    try {
+                        const response = await fetch('/explain_prediction', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                model: model, 
+                                input_data: inputData
+                            })
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            const explanation = data.explanation;
+
+                            shapFeaturesList.innerHTML = ''; 
+                            
+                            explanation.slice(0, 10).forEach(item => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `
+                                    <span>${item.feature}</span>
+                                    <span class="shap-value">${item.importance.toFixed(5)}</span>
+                                `;
+                                shapFeaturesList.appendChild(li);
+                            });
+                            
+                        } else {
+                            const errorData = await response.json();
+                            shapFeaturesList.innerHTML = `<li style="color: red;">Error: ${errorData.error || 'Failed to calculate SHAP.'}</li>`;
+                        }
+                    } catch (error) {
+                        console.error('SHAP Request Error:', error);
+                        shapFeaturesList.innerHTML = `<li style="color: red;">Connection error.</li>`;
+                    }
+                }
+
+
+           
+                renderInputs(currentModel);
+
+               
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        currentModel = button.dataset.model;
+                        renderInputs(currentModel);
+                        resultDisplay.textContent = ''; 
+                    });
+                });
+
+              
+                predictButton.addEventListener('click', async () => {
+                    resultDisplay.textContent = 'Predicting...';
+                    const featureData = {};
+                    const featureNames = currentModel === 'tess' ? tessFeatureNames : keplerFeatureNames;
+                    
+                    let allInputsAreValid = true;
+                    featureNames.forEach(name => {
+                        const inputElement = document.getElementById(name);
+                       
+                        const isIdField = ['kepid', 'toi', 'tid'].includes(name);
+                        const value = inputElement.value === '' ? (isIdField ? null : NaN) : parseFloat(inputElement.value);
+
+                        if (isNaN(value) && !isIdField) {
+                            allInputsAreValid = false;
+                        }
+                        featureData[name] = value;
+                    });
+
+                    if (!allInputsAreValid) {
+                        resultDisplay.textContent = 'Please enter a valid number for all required (non-ID) features.';
+                        return;
+                    }
+
+                    try {
+                        const endpoint = currentModel === 'tess' ? '/predict_tess' : '/predict_kepler';
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(featureData),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`Server responded with a status of ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        resultDisplay.textContent = `Prediction: ${data.prediction}`;
+                    } catch (error) {
+                        resultDisplay.textContent = `Error: ${error.message}. Is the server running?`;
+                        console.error('Prediction Error:', error);
+                    }
+                });
+
+
+
+              
+                bulkInputBtn.addEventListener('click', () => {
+                  
+                    bulkFileInput.setAttribute('data-model', currentModel);
+                    bulkFileInput.click();
+                });
+
+              
+                bulkSampleBtn.addEventListener('click', () => {
+                    window.location.href = `/download_sample/${currentModel}`;
+                });
+
+                
+                bulkFileInput.addEventListener('change', async (event) => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const model = bulkFileInput.getAttribute('data-model');
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('model', model);
+
+                    try {
+                        const response = await fetch('/bulk_predict', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            
+                            updateContent('history'); 
+                            if (typeof fetchHistory === 'function') {
+                                fetchHistory('all', ''); 
+                            }
+                            showSuccess(`Bulk prediction done for ${model.toUpperCase()}! The results have been saved to your history.`); 
+                        } else {
+                           
+                            showError(result.error || "An unknown error occurred during bulk prediction. Check the server console.");
+                        }
+
+                    } catch (error) {
+                        showError("Failed to connect to the server for bulk prediction.");
+                        console.error('Bulk Prediction Error:', error);
+                    } finally {
+                        
+                        bulkFileInput.value = '';
+                    }
+                });
+            }
+
+            
+
+            async function setupHistoryPage() {
+                const historyTableBody = document.getElementById('history-table-body');
+                const modelTabs = document.querySelectorAll('.model-tabs .tab');
+                const historySearch = document.getElementById('history-search');
+                const detailsModal = document.getElementById('detailsModal');
+                const modalContentPre = document.getElementById('modal-content-pre');
+                const exportBtn = document.getElementById('export-btn');
+
+               
+                async function fetchHistory(filter = 'all', query = '') {
+                    historyTableBody.innerHTML = '<tr><td colspan="4">Loading history...</td></tr>';
+                    const url = `/history?filter=${filter}&search=${query}`;
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch history');
+                        }
+                        const historyData = await response.json();
+                        renderHistoryTable(historyData);
+                    } catch (error) {
+                        historyTableBody.innerHTML = `<tr><td colspan="4">Error loading history: ${error.message}</td></tr>`;
+                    }
+                }
+
+                const resetBtn = document.getElementById('reset-btn');
+
+                resetBtn.addEventListener('click', async () => {
+                    
+                    const message = `
+                        <p style="color: #e74c3c; font-size: 1.1em; font-weight: 600;">
+                            WARNING: This action is permanent!
+                        </p>
+                        <p>Are you absolutely sure you want to delete ALL prediction history? This cannot be undone.</p>
+                    `;
+                    const confirmed = await showConfirmation('Confirm Database Reset', message);
+
+                    if (!confirmed) {
+                        return; 
+                    }
+
+                    
+                    try {
+                        
+                        const response = await fetch('/reset_history', {
+                            method: 'POST',
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Failed to reset history on the server.');
+                        }
+                        
+                       
+                        showSuccess('Prediction history has been successfully reset (cleared).');
+                        fetchHistory(); 
+
+                    } catch (error) {
+                        showError('Failed to reset history.');
+                        console.error('Error resetting history:', error);
+                    }
+                });
+
+                
+                function renderHistoryTable(data) {
+                    historyTableBody.innerHTML = '';
+                    if (data.length === 0) {
+                        historyTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #aaa;">No history found.</td></tr>';
+                        return;
+                    }
+                    data.forEach(entry => {
+                        const row = document.createElement('tr');
+                        
+                        const inputDataStringForAttr = JSON.stringify(entry.input_data).replace(/"/g, '&quot;');
+                        
+                        row.innerHTML = `
+                            <td>${entry.model_name}</td>
+                            <td>${entry.prediction}</td>
+                            <td>${entry.timestamp}</td>
+                            
+                            <td>
+                                <button class="view-btn raw-data-btn" 
+                                        data-input='${inputDataStringForAttr}'>
+                                    View
+                                </button>
+                            </td>
+                            
+                            <td>
+                                <button class="shap-explain-btn" 
+                                        data-model='${entry.model_name}' 
+                                        data-input='${inputDataStringForAttr}'>
+                                    Explain
+                                </button>
+                            </td>
+                        `;
+                        historyTableBody.appendChild(row);
+                    });
+
+                   
+                    document.querySelectorAll('.view-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            
+                            const targetButton = e.currentTarget;
+                            
+                           
+                            if (targetButton.hasAttribute('data-model')) {
+                                
+                                showShapExplanation(targetButton);
+                                
+                            } else {
+                                
+                                const modalContentPre = document.getElementById('modal-content-pre');
+                                const detailsModal = document.getElementById('detailsModal');
+                                
+                                
+                                const rawJsonString = targetButton.getAttribute('data-input');
+                                
+                               
+                                const parsedData = JSON.parse(rawJsonString);
+                                
+                             
+                                const cleanFormattedJSON = JSON.stringify(parsedData, null, 2);
+                                
+                                
+                                modalContentPre.textContent = cleanFormattedJSON;
+                                detailsModal.style.display = 'block';
+                            }
+                        });
+                    });
+
+                    
+                }
+                
+              
+                modelTabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        modelTabs.forEach(t => t.classList.remove('active'));
+                        e.currentTarget.classList.add('active');
+                        const filterValue = e.currentTarget.dataset.model;
+                        
+                    
+                        if (filterValue === 'all') {
+                            exportBtn.classList.add('disabled');
+                        } else {
+                            exportBtn.classList.remove('disabled');
+                        }
+                        
+                        fetchHistory(filterValue, historySearch.value);
+                    });
+                });
+
+                
+                exportBtn.addEventListener('click', async () => {
+                    if (exportBtn.classList.contains('disabled')) {
+                        errorMessage.textContent = "The export to CSV feature only works for a single model at a time. Please select either the Kepler or TESS tab to export.";
+                        errorModal.style.display = 'block';
+                        return;
+                    }
+                    const activeFilter = document.querySelector('.model-tabs .tab.active').dataset.model;
+                    
+                    try {
+                        const response = await fetch(`/history?filter=${activeFilter}`);
+                        const filteredHistory = await response.json();
+                        
+                        if (filteredHistory.length === 0) {
+                            showError('No data available to export for the selected model.');
+                            return;
+                        }
+
+                     
+                        
+                     
+                        let allInputKeys = new Set();
+                        filteredHistory.forEach(item => {
+                            Object.keys(item.input_data).forEach(key => allInputKeys.add(key));
+                        });
+                        
+                      
+                        const staticHeaders = ["Model", "Prediction", "Timestamp"];
+                        const inputKeysArray = Array.from(allInputKeys).sort();
+                        const headers = [...staticHeaders, ...inputKeysArray];
+
+                     
+                        let csvContent = headers.map(h => `"${h}"`).join(',') + "\n";
+                        
+                      
+                        filteredHistory.forEach(item => {
+                            const row = [];
+                           
+                            row.push(`"${item.model_name}"`);
+                            row.push(`"${item.prediction}"`);
+                            row.push(`"${item.timestamp}"`);
+                            
+                            
+                            inputKeysArray.forEach(key => {
+                                const value = item.input_data[key];
+                                
+                                row.push(value === undefined || value === null ? "" : `"${value}"`);
+                            });
+                            
+                            csvContent += row.join(",") + "\n";
+                        });
+
+                       
+
+                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                        const link = document.createElement("a");
+
+                       
+                        const today = new Date();
+                        const dateStr = today.toISOString().slice(0, 10);
+                        const modelName = activeFilter;
+                        const filename = `prediction_history_${modelName}_${dateStr}.csv`;
+                        
+                        link.href = URL.createObjectURL(blob);
+                        link.setAttribute("download", filename);
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                    } catch (error) {
+                        showError('Failed to export history.');
+                        console.error('Error exporting history:', error);
+                    }
+                });
+
+                historySearch.addEventListener('input', () => {
+                    const activeFilter = document.querySelector('.model-tabs .tab.active').dataset.model;
+                    fetchHistory(activeFilter, historySearch.value);
+                });
+
+                
+                fetchHistory();
+            }
+        });
+    </script>
+
+
+
+
+</body>
+</html>
